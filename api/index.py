@@ -75,6 +75,7 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(' Hello, world!'.encode('utf-8'))
 
+        return
 #
 # if __name__ == "__main__":
 #     hostName = "localhost"
