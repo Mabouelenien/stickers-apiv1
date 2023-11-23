@@ -2,3 +2,4 @@ nbproject/
 .venv/
 .idea/
 __pycache__/
+.vercel
