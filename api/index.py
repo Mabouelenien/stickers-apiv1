@@ -4,11 +4,19 @@ import json
 import urllib.parse
 
 
-class handler(BaseHTTPRequestHandler):
+class MyServer(BaseHTTPRequestHandler):
 
     def do_GET(self):
         # check for get request
         url = urllib.parse.urlparse(self.path)
+        if url.path == '/api':
+            self.wfile.write(url.path.encode('utf-8'))
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(' Hello, world!'.encode('utf-8'))
+            return
+
         url_query = dict(urllib.parse.parse_qsl(url.query))
         query = ''
         # if the existence of a key in a dict
@@ -56,16 +64,27 @@ class handler(BaseHTTPRequestHandler):
                 self.wfile.write(json_data.encode())
                 return
 
-            product = '[[1, "'+product_name+'", 12.5, "sticker_1.png"]]'
+            product = '[[1, "' + product_name + '", 12.5, "sticker_1.png"]]'
             # Send the JSON data as the response
             self.wfile.write(product.encode('utf-8'))
         else:
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(url.path.encode('utf-8'))
-            self.wfile.write('  --- '.encode('utf-8'))
-            self.wfile.write(url.query.encode('utf-8'))
             self.wfile.write(' Hello, world!'.encode('utf-8'))
 
-        return
+#
+# if __name__ == "__main__":
+#     hostName = "localhost"
+#     serverPort = 8000
+#
+#     webServer = HTTPServer((hostName, serverPort), MyServer)
+#     print("Server started http://%s:%s" % (hostName, serverPort))
+#
+#     try:
+#         webServer.serve_forever()
+#     except KeyboardInterrupt:
+#         pass
+#
+#     webServer.server_close()
+#     print("Server stopped.")
