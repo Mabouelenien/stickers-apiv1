@@ -9,8 +9,17 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         # check for get request
         url = urllib.parse.urlparse(self.path)
+        url_query = dict(urllib.parse.parse_qsl(url.query))
+        query = ''
+        # if the existence of a key in a dict
+        if 'query' in url_query:
+            query = url_query['query']
+        if query == '':
+            json_data = json.dumps('{error: true,msg: "Error empty product name!"}')
+            self.wfile.write(json_data.encode())
+            return
         # return all products
-        if url.path == '/products':
+        if query == 'products':
             self.send_response(200)
             self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header("Content-type", "application/json")
@@ -30,7 +39,7 @@ class handler(BaseHTTPRequestHandler):
             # Send the JSON data as the response
             self.wfile.write(products.encode('utf-8'))
             # return 1 product -> /product?name=product_1
-        elif url.path == '/product':
+        elif query == 'product':
             self.send_response(200)
             self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header("Content-type", "application/json")
@@ -40,14 +49,14 @@ class handler(BaseHTTPRequestHandler):
             url_query = dict(urllib.parse.parse_qsl(url.query))
             product_name = ''
             # if the existence of a key in a dict
-            if 'name' in url_query:
-                product_name = url_query['name']
+            if 'productName' in url_query:
+                product_name = url_query['productName']
             if product_name == '':
                 json_data = json.dumps('{error: true,msg: "Error empty product name!"}')
                 self.wfile.write(json_data.encode())
-                return 0
+                return
 
-            product = '[[1, "product_1", 12.5, "sticker_1.png"]]'
+            product = '[[1, "'+product_name+'", 12.5, "sticker_1.png"]]'
             # Send the JSON data as the response
             self.wfile.write(product.encode('utf-8'))
         else:
