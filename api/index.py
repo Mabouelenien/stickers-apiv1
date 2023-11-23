@@ -4,11 +4,13 @@ import json
 import urllib.parse
 
 
-class MyServer(BaseHTTPRequestHandler):
+class handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         # check for get request
         url = urllib.parse.urlparse(self.path)
+        self.wfile.write(url.path.encode('utf-8'))
+        return
         if url.path == '/api':
             self.wfile.write(url.path.encode('utf-8'))
             self.send_response(200)
@@ -78,7 +80,7 @@ class MyServer(BaseHTTPRequestHandler):
 #     hostName = "localhost"
 #     serverPort = 8000
 #
-#     webServer = HTTPServer((hostName, serverPort), MyServer)
+#     webServer = HTTPServer((hostName, serverPort), handler)
 #     print("Server started http://%s:%s" % (hostName, serverPort))
 #
 #     try:
