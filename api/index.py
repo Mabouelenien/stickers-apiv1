@@ -9,13 +9,7 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         # check for get request
         url = urllib.parse.urlparse(self.path)
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        self.wfile.write(url.path.encode('utf-8'))
-        return
         if url.path == '/api':
-            self.wfile.write(url.path.encode('utf-8'))
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
