@@ -74,8 +74,11 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(' Hello, world!'.encode('utf-8'))
 
         return
+
+# to run local server -> python .\api\index.py
 #
 # if __name__ == "__main__":
+#
 #     hostName = "localhost"
 #     serverPort = 8000
 #
